@@ -4,6 +4,8 @@ import { Controller, Param, Get } from '@nestjs/common';
 export class CategoriesController {
   @Get(':id/products/:productId')
   getCategory(@Param('productId') productId: string, @Param('id') id: string) {
-    return `product ${productId} and ${id}`;
+    return {
+      message: `product ${productId} and ${id}`,
+    };
   }
 }
