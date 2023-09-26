@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { Product } from './../entities/product.entity';
 
 @Injectable()
-export class ProductService {
+export class ProductsService {
   private counterId = 1;
   private products: Product[] = [
     {
@@ -34,24 +34,19 @@ export class ProductService {
   }
 
   update(id: number, payload: any) {
-    const productFound = this.products.findIndex((item) => item.id === id);
-    let message = '';
-    if (productFound > 0) {
-      this.products[productFound] = {
-        id: id,
-        ...payload,
-      };
-      message = 'Product updated';
-    } else {
-      message = 'Product not found';
-    }
-    return message;
+    const index = this.products.findIndex((item) => item.id === id);
+    if (!this.products[index]) return { message: 'Id no existe' };
+    this.products[index] = {
+      ...this.products[index],
+      ...payload,
+    };
+    return this.products[index];
   }
 
   delete(id: number) {
     const productFound = this.products.findIndex((item) => item.id === id);
     let message = '';
-    if (productFound > 0) {
+    if (productFound >= 0) {
       this.products.splice(productFound, 1);
       message = 'Product deleted';
     } else {
